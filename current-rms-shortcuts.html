@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Current RMS ショートカットキー一覧</title>
+<style>
+  :root {
+    --bg: #0f1220;
+    --panel: #161a2e;
+    --panel-2: #1d2240;
+    --accent: #6c8cff;
+    --accent-2: #9b6cff;
+    --text: #e7eaf6;
+    --muted: #9aa0c0;
+    --key-bg: linear-gradient(180deg, #2a3060 0%, #1a1f3d 100%);
+    --key-active: linear-gradient(180deg, #ffd76b 0%, #ff8a3d 100%);
+    --shift-bg: linear-gradient(180deg, #6c8cff 0%, #4a63cc 100%);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+    background: radial-gradient(circle at 20% 10%, #1d2350 0%, var(--bg) 60%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  .container { max-width: 1080px; margin: 0 auto; }
+
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  header .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(108, 140, 255, 0.15);
+    border: 1px solid rgba(108, 140, 255, 0.4);
+    color: var(--accent);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+  header h1 {
+    font-size: 36px;
+    margin: 0 0 8px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  header p { color: var(--muted); margin: 0; font-size: 15px; }
+
+  /* ダウンロードバー */
+  .download-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 24px auto 40px;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, rgba(108, 140, 255, 0.18), rgba(155, 108, 255, 0.18));
+    border: 1px solid rgba(108, 140, 255, 0.35);
+    border-radius: 14px;
+    max-width: 760px;
+  }
+  .download-bar .label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: transform 0.12s, box-shadow 0.12s;
+    border: 1px solid transparent;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    color: white;
+    box-shadow: 0 4px 16px rgba(108, 140, 255, 0.4);
+  }
+  .btn-primary:hover { box-shadow: 0 6px 22px rgba(108, 140, 255, 0.55); }
+  .btn-secondary {
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    border-color: rgba(255,255,255,0.15);
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+  .btn .ic { font-size: 16px; }
+
+  /* キーボード風ビジュアル */
+  .keyboard {
+    background: var(--panel);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 40px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .keyboard-title {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 0.1em;
+  }
+  .row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .key {
+    min-width: 48px;
+    height: 56px;
+    background: var(--key-bg);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #b8bdd9;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+    position: relative;
+    padding: 4px;
+  }
+  .key.wide { min-width: 80px; }
+  .key.shift { min-width: 110px; background: var(--shift-bg); color: white; }
+  .key.active {
+    background: var(--key-active);
+    color: #2a1a00;
+    box-shadow: 0 0 0 2px rgba(255, 200, 80, 0.5), 0 4px 20px rgba(255, 138, 61, 0.5);
+  }
+  .key .sub {
+    font-size: 9px;
+    margin-top: 2px;
+    color: rgba(0,0,0,0.7);
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  /* ショートカット一覧 */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 20px;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(108, 140, 255, 0.4);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .mini-keys {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .mini-key {
+    background: var(--key-bg);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #d8dcf0;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.3);
+  }
+  .mini-key.shift {
+    background: var(--shift-bg);
+    color: white;
+  }
+  .plus { color: var(--muted); font-size: 12px; }
+  .card-icon {
+    font-size: 24px;
+    margin-left: auto;
+  }
+  .card h3 {
+    margin: 0 0 6px;
+    font-size: 17px;
+    color: var(--text);
+  }
+  .card .ja {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 0 0 10px;
+  }
+  .card .desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #c8cce4;
+    margin: 0;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .card .pages {
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .card .pages strong { color: #b0b6d8; }
+
+  /* 注意事項 */
+  .notes {
+    background: var(--panel);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .notes h2 {
+    margin: 0 0 16px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .notes ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #c8cce4;
+    line-height: 1.8;
+    font-size: 14px;
+  }
+  .notes li { margin-bottom: 6px; }
+  .notes code {
+    background: rgba(108, 140, 255, 0.15);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+  /* インストール手順 */
+  .install {
+    background: linear-gradient(135deg, rgba(108, 140, 255, 0.1), rgba(155, 108, 255, 0.1));
+    border: 1px solid rgba(108, 140, 255, 0.3);
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .install h2 {
+    margin: 0 0 16px;
+    font-size: 18px;
+  }
+  .install ol {
+    margin: 0;
+    padding-left: 20px;
+    color: #c8cce4;
+    line-height: 1.8;
+    font-size: 14px;
+  }
+  .install li { margin-bottom: 8px; }
+  .install a { color: var(--accent); }
+
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  @media print {
+    body { background: white; color: black; padding: 20px; }
+    .key { color: black; background: #eee; }
+    .key.shift { background: #6c8cff; color: white; }
+    .key.active { background: #ffd76b; color: black; }
+    .card, .notes, .install, .keyboard {
+      background: white;
+      border: 1px solid #ddd;
+      box-shadow: none;
+    }
+    header h1 { -webkit-text-fill-color: #4a63cc; color: #4a63cc; }
+    .card .desc, .notes ul, .install ol { color: #333; }
+    .card h3, .notes h2, .install h2 { color: #1a1a1a; }
+    .card .ja, footer, .keyboard-title { color: #666; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">CURRENT RMS · TAMPERMONKEY SCRIPT v4.4</div>
+    <h1>カスタムショートカット キーマップ</h1>
+    <p>Shift キー + 1 文字で、よく使う操作を一発で実行できます</p>
+  </header>
+
+  <!-- ダウンロード -->
+  <div class="download-bar">
+    <span class="label">📥 スクリプトを入手：</span>
+    <a class="btn btn-primary" href="https://raw.githubusercontent.com/sota0916/REPO_NAME/main/current-rms-shortcuts.user.js" target="_blank" rel="noopener">
+      <span class="ic">⬇️</span> .user.js をダウンロード
+    </a>
+    <a class="btn btn-secondary" href="https://github.com/sota0916/REPO_NAME" target="_blank" rel="noopener">
+      <span class="ic">🐙</span> GitHub で見る
+    </a>
+  </div>
+
+  <!-- キーボードビジュアル -->
+  <div class="keyboard">
+    <div class="keyboard-title">— KEY LAYOUT —</div>
+
+    <div class="row">
+      <div class="key wide">Tab</div>
+      <div class="key active">Q<div class="sub">前へ</div></div>
+      <div class="key">W</div>
+      <div class="key active">E<div class="sub">次へ</div></div>
+      <div class="key active">R<div class="sub">今日</div></div>
+      <div class="key">T</div>
+      <div class="key">Y</div>
+      <div class="key">U</div>
+      <div class="key">I</div>
+      <div class="key">O</div>
+      <div class="key">P</div>
+    </div>
+
+    <div class="row">
+      <div class="key wide">Caps</div>
+      <div class="key active">A<div class="sub">プランナー</div></div>
+      <div class="key active">S<div class="sub">日付選択</div></div>
+      <div class="key">D</div>
+      <div class="key">F</div>
+      <div class="key">G</div>
+      <div class="key">H</div>
+      <div class="key">J</div>
+      <div class="key">K</div>
+      <div class="key">L</div>
+    </div>
+
+    <div class="row">
+      <div class="key shift">⇧ Shift</div>
+      <div class="key">Z</div>
+      <div class="key">X</div>
+      <div class="key active">C<div class="sub">見積作成</div></div>
+      <div class="key">V</div>
+      <div class="key">B</div>
+      <div class="key">N</div>
+      <div class="key">M</div>
+      <div class="key">,</div>
+      <div class="key">.</div>
+      <div class="key shift">⇧ Shift</div>
+    </div>
+  </div>
+
+  <!-- ショートカット一覧 -->
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="mini-keys">
+          <span class="mini-key shift">Shift</span>
+          <span class="plus">+</span>
+          <span class="mini-key">Q</span>
+        </div>
+        <span class="card-icon">⬅️</span>
+      </div>
+      <h3>Previous（前へ）</h3>
+      <p class="ja">前の期間に移動</p>
+      <p class="desc">画面の「前へ」ボタンをクリックします。カレンダーや日付ビューで前の日／週／月に戻る時に使います。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="mini-keys">
+          <span class="mini-key shift">Shift</span>
+          <span class="plus">+</span>
+          <span class="mini-key">E</span>
+        </div>
+        <span class="card-icon">➡️</span>
+      </div>
+      <h3>Next（次へ）</h3>
+      <p class="ja">次の期間に移動</p>
+      <p class="desc">画面の「次へ」ボタンをクリックします。カレンダーや日付ビューで次の日／週／月に進む時に使います。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="mini-keys">
+          <span class="mini-key shift">Shift</span>
+          <span class="plus">+</span>
+          <span class="mini-key">R</span>
+        </div>
+        <span class="card-icon">📅</span>
+      </div>
+      <h3>Reset to Today（今日にリセット）</h3>
+      <p class="ja">表示日を今日に戻す</p>
+      <p class="desc">表示中の日付を今日に戻します。Planner / Booking Availability / Product Availability / Calendar / Resource Planner に対応。</p>
+      <p class="pages"><strong>対応ページ:</strong> Planner, Availability, Calendar, Resource Planner</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="mini-keys">
+          <span class="mini-key shift">Shift</span>
+          <span class="plus">+</span>
+          <span class="mini-key">S</span>
+        </div>
+        <span class="card-icon">🗓️</span>
+      </div>
+      <h3>Show Picker（日付ピッカーを開く）</h3>
+      <p class="ja">日付選択ボックスを開く</p>
+      <p class="desc">画面上の「Show」ピッカーボタンを開きます。任意の日付を素早く指定したいときに便利です。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="mini-keys">
+          <span class="mini-key shift">Shift</span>
+          <span class="plus">+</span>
+          <span class="mini-key">C</span>
+        </div>
+        <span class="card-icon">📝</span>
+      </div>
+      <h3>Create Quotation（見積もり作成）</h3>
+      <p class="ja">新規 Quotation を作成</p>
+      <p class="desc">画面右上の「Create」ドロップダウンを開き、「Quotation」を自動選択します。Opportunity 画面などから即座に見積を作成できます。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="mini-keys">
+          <span class="mini-key shift">Shift</span>
+          <span class="plus">+</span>
+          <span class="mini-key">A</span>
+        </div>
+        <span class="card-icon">🏗️</span>
+      </div>
+      <h3>Go to Job Planner（プランナーへ移動）</h3>
+      <p class="ja">/planner ページに直接移動</p>
+      <p class="desc">どのページからでも一発で Job Planner（<code>/planner</code>）に移動します。</p>
+    </div>
+
+  </div>
+
+  <!-- 注意事項 -->
+  <div class="notes">
+    <h2>📌 使うときの注意</h2>
+    <ul>
+      <li>ショートカットは必ず <code>Shift</code> + 大文字キー の組み合わせです（Ctrl / Cmd / Alt は併用しません）。</li>
+      <li>テキスト入力中（<code>input</code> / <code>textarea</code> / 編集可能要素にフォーカス中）は <strong>動作しません</strong>。先に Esc などでフォーカスを外してください。</li>
+      <li>ボタンが画面上に存在しない場合（例：Show ピッカーが無いページで Shift+S）は何も起きません。</li>
+      <li>動作対象は <code>https://*.current-rms.com/*</code> のみです。</li>
+    </ul>
+  </div>
+
+  <!-- インストール手順 -->
+  <div class="install">
+    <h2>🚀 インストール手順</h2>
+    <ol>
+      <li>ブラウザに <strong>Tampermonkey</strong> 拡張をインストール（<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener">tampermonkey.net</a>）。</li>
+      <li>上の <a href="https://raw.githubusercontent.com/sota0916/REPO_NAME/main/current-rms-shortcuts.user.js" target="_blank" rel="noopener"><strong>「⬇️ .user.js をダウンロード」</strong></a> ボタンをクリック。</li>
+      <li>Tampermonkey が自動でインストール画面を開くので <strong>「Install」</strong> を押す。</li>
+      <li>Tampermonkey のダッシュボードで <strong>有効</strong> になっていることを確認。</li>
+      <li>Current RMS を開いて、<code>Shift + R</code> などを試す。動けば導入完了！</li>
+    </ol>
+    <p style="margin-top:14px; font-size:12px; color: var(--muted);">
+      ※ うまく開かない場合は、<a href="https://github.com/sota0916/REPO_NAME" target="_blank" rel="noopener" style="color: var(--accent);">GitHub リポジトリ</a> から <code>.user.js</code> を直接コピーして、Tampermonkey ダッシュボードの「+」で新規スクリプトに貼り付けて保存してください。
+    </p>
+  </div>
+
+  <footer>
+    Current RMS Custom Shortcuts v4.4 — このページは印刷／PDF 化してチームに配布できます
+  </footer>
+
+</div>
+</body>
+</html>
